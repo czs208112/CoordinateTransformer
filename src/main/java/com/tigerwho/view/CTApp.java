@@ -90,8 +90,9 @@ public class CTApp {
 		group_1.setSize(482, 98);
 
 		btn_trans = new Button(group_1, SWT.NONE);
+		btn_trans.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 12, SWT.NORMAL));
 
-		btn_trans.setBounds(310, 25, 70, 30);
+		btn_trans.setBounds(305, 35, 76, 39);
 		btn_trans.setText("转换");
 
 		combo_type = new Combo(group_1, SWT.READ_ONLY);
@@ -107,8 +108,9 @@ public class CTApp {
 		label.setText("类型:");
 
 		button_clear = new Button(group_1, SWT.NONE);
+		button_clear.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 12, SWT.NORMAL));
 		button_clear.setText("清空");
-		button_clear.setBounds(386, 25, 70, 30);
+		button_clear.setBounds(387, 35, 76, 39);
 
 		Label label_2 = new Label(group_1, SWT.NONE);
 		label_2.setAlignment(SWT.RIGHT);

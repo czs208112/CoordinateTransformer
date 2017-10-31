@@ -82,7 +82,7 @@ public class Transformtools {
 				}
 
 				DecimalFormat df = new DecimalFormat("#." + multiZero);
-				output = df.format(out);
+				output = df.format(out+"");
 			}
 
 		}

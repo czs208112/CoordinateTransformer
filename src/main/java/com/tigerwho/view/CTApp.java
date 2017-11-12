@@ -21,9 +21,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.tigerwho.constant.CommonConstant;
 import com.tigerwho.controller.Transformtools;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 public class CTApp {
 	Display display;// 创建一个display对象。
@@ -98,8 +99,8 @@ public class CTApp {
 		combo_type = new Combo(group_1, SWT.READ_ONLY);
 
 		combo_type.setTouchEnabled(true);
-		combo_type.setBounds(81, 27, 188, 28);
-		combo_type.setItems(new String[] { "直角坐标->经纬度坐标", "经纬度坐标->直角坐标" });
+		combo_type.setBounds(81, 27, 200, 28);
+		combo_type.setItems(new String[] { "十进制坐标->经纬度坐标", "经纬度坐标->十进制坐标" });
 		combo_type.select(0);
 
 		Label label = new Label(group_1, SWT.NONE);
@@ -118,11 +119,11 @@ public class CTApp {
 		label_2.setText("小数位:");
 
 		text_length = new IntText(group_1, SWT.BORDER);
-		text_length.setEnabled(false);
 		text_length.setBounds(81, 61, 39, 26);
+		text_length.setText("6");
 
 		label_length = new Label(group_1, SWT.NONE);
-		label_length.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		label_length.setForeground(SWTResourceManager.getColor(255, 0, 0));
 		label_length.setBounds(126, 61, 170, 20);
 		label_length.setText("最多20位小数,默认6位");
 
@@ -142,8 +143,6 @@ public class CTApp {
 		text_to.setSize(229, 278);
 
 		text_to.setSelection(0);
-
-		label_length.setVisible(false);
 	}
 
 	protected void initListener() {
@@ -151,7 +150,7 @@ public class CTApp {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				String from = text_from.getText();
+				String from = text_from.getText().trim();
 				int type = combo_type.getSelectionIndex();
 				String length = text_length.getText();
 				int dig_leg = 0;
@@ -198,16 +197,12 @@ public class CTApp {
 
 		combo_type.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent arg0) {
-				int type = combo_type.getSelectionIndex();
-				if (type == 0) {
-					text_length.setEnabled(false);
-					label_length.setVisible(false);
-					text_length.setText("");
-				} else {
-					label_length.setVisible(true);
-					text_length.setEnabled(true);
-					text_length.setText("6");
-				}
+				// int type = combo_type.getSelectionIndex();
+				// if (type == 0) {
+				// text_length.setText("0");
+				// } else {
+				// text_length.setText("6");
+				// }
 			}
 		});
 
@@ -219,8 +214,7 @@ public class CTApp {
 					text_to.selectAll();
 				} else if (e.stateMask == SWT.CTRL && e.keyCode == 'c') {
 					Clipboard clipboard = new Clipboard(display);
-					clipboard.setContents(new String[] { text_to.getSelectionText() },
-							new Transfer[] { TextTransfer.getInstance() }); // 复制内容
+					clipboard.setContents(new String[] { text_to.getSelectionText() }, new Transfer[] { TextTransfer.getInstance() }); // 复制内容
 					clipboard.dispose();
 				}
 			}

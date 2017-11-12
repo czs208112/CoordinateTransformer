@@ -10,7 +10,7 @@ public class Transformtools {
 	public static List<String> transformAll(String[] coordinateArr, int type, int zeroNum) {
 		List<String> outList = new ArrayList<>();
 		for (String coordinate : coordinateArr) {
-			String transformSingle = transformSingle(coordinate, type, zeroNum);
+			String transformSingle = transformSingle(coordinate.trim(), type, zeroNum);
 			outList.add(transformSingle);
 		}
 		return outList;
@@ -33,6 +33,7 @@ public class Transformtools {
 				}
 				coordinate = coordinate.trim().replace("。", ".");
 				Double coordinateDouble = Double.valueOf(coordinate);
+				
 				int intValue = coordinateDouble.intValue();
 				double doubleValue = coordinateDouble - intValue;
 
@@ -42,32 +43,38 @@ public class Transformtools {
 				output += doubleValueSub.intValue() + CommonConstant.MINUTE;
 
 				double doubleValueSub1 = doubleValueSub - doubleValueSub.intValue();
-				long round = Math.round(doubleValueSub1 * 60);
 
-				output += round + CommonConstant.SECOND;
+				String format = "0";
+				for (int i = 0; i < zeroNum; i++) {
+					if (i == 0) {
+						format += ".";
+					}
+					format += "0";
+				}
+
+				DecimalFormat df = new DecimalFormat(format);
+				String second = df.format(doubleValueSub1 * 60);
+
+				output += second + CommonConstant.SECOND;
 			}
 
 		} else {
 			if (!"".equals(coordinate)) {
-				coordinate = coordinate.trim().replace("’", CommonConstant.MINUTE).replaceAll("'", CommonConstant.MINUTE)
-						.replaceAll("“", CommonConstant.SECOND).replaceAll("”", CommonConstant.SECOND)
+				coordinate = coordinate.trim().replace("’", CommonConstant.MINUTE).replaceAll("'", CommonConstant.MINUTE).replaceAll("“", CommonConstant.SECOND).replaceAll("”", CommonConstant.SECOND)
 						.replaceAll("\"", CommonConstant.SECOND).replaceAll("\\s", "");
 
-				String regex = "^\\d+" + CommonConstant.DEGREE + "(\\d+" + CommonConstant.MINUTE + "(\\d+"
-						+ CommonConstant.SECOND + ")?)?$";
+				String regex = "^\\d+" + CommonConstant.DEGREE + "(\\d+" + CommonConstant.MINUTE + "((\\d+\\.)?\\d+" + CommonConstant.SECOND + ")?)?$";
 				if (!coordinate.matches(regex)) {
 					return "NULL";
 				}
 
 				String degreeFull = "0", minuteFull = "0", secondFull = "0";
 				if (coordinate.contains(CommonConstant.MINUTE) && coordinate.contains(CommonConstant.SECOND)) {
-					secondFull = coordinate.substring(coordinate.lastIndexOf(CommonConstant.MINUTE) + 1,
-							coordinate.lastIndexOf(CommonConstant.SECOND));
+					secondFull = coordinate.substring(coordinate.lastIndexOf(CommonConstant.MINUTE) + 1, coordinate.lastIndexOf(CommonConstant.SECOND));
 				}
 
 				if (coordinate.contains(CommonConstant.DEGREE) && coordinate.contains(CommonConstant.SECOND)) {
-					minuteFull = coordinate.substring(coordinate.lastIndexOf(CommonConstant.DEGREE) + 1,
-							coordinate.lastIndexOf(CommonConstant.MINUTE));
+					minuteFull = coordinate.substring(coordinate.lastIndexOf(CommonConstant.DEGREE) + 1, coordinate.lastIndexOf(CommonConstant.MINUTE));
 				}
 
 				double minute = Integer.valueOf(minuteFull) + Double.valueOf(secondFull) / 60;
@@ -76,15 +83,17 @@ public class Transformtools {
 				double suffix = minute % 60 / 60;
 				double out = prefix + suffix;
 
-				String multiZero = "";
+				String format = "0";
 				for (int i = 0; i < zeroNum; i++) {
-					multiZero += "0";
+					if (i == 0) {
+						format += ".";
+					}
+					format += "0";
 				}
 
-				DecimalFormat df = new DecimalFormat("#." + multiZero);
-				output = df.format(out+"");
+				DecimalFormat df = new DecimalFormat(format);
+				output = df.format(out);
 			}
-
 		}
 
 		return output;

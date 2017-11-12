@@ -7,7 +7,7 @@ import java.util.List;
 import com.tigerwho.constant.CommonConstant;
 
 public class Transformtools {
-	public static List<String> transformAll(String[] coordinateArr, int type, int zeroNum) {
+	public static List<String> transformAll(String[] coordinateArr, int type, int zeroNum) throws Exception {
 		List<String> outList = new ArrayList<>();
 		for (String coordinate : coordinateArr) {
 			String transformSingle = transformSingle(coordinate.trim(), type, zeroNum);
@@ -23,7 +23,7 @@ public class Transformtools {
 	 * @param type
 	 * @return
 	 */
-	public static String transformSingle(String coordinate, int type, int zeroNum) throws NumberFormatException {
+	public static String transformSingle(String coordinate, int type, int zeroNum) throws Exception {
 		String output = "";
 		if (type == 0) {
 			if (!"".equals(coordinate)) {

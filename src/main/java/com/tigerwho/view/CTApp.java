@@ -177,7 +177,18 @@ public class CTApp {
 				}
 
 				String[] split = from.split("\r\n");
-				List<String> outputList = Transformtools.transformAll(split, type, dig_leg);
+				List<String> outputList = null;
+				try {
+					outputList = Transformtools.transformAll(split, type, dig_leg);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+
+					MessageBox dialog = new MessageBox(shell, SWT.YES | SWT.ICON_WARNING);
+					dialog.setText("信息");
+					dialog.setMessage("转换失败，请检查格式!");
+					dialog.open();
+					return;
+				}
 
 				String tmp = "";
 				for (String outStr : outputList) {
